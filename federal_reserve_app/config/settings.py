@@ -8,7 +8,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:flasknginx@127.0.0.1:5432/flasknginx'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:tiger@postgres/fundingcircle'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'thisisdevsecret'
     SALT_KEY = 'saltthisthing'
