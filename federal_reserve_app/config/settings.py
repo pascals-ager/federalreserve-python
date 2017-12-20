@@ -8,7 +8,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://scott:tiger@postgres/fundingcircle'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://scott:tiger@localhost:5432/fundingcircle'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = 'thisisdevsecret'
     SALT_KEY = 'saltthisthing'
