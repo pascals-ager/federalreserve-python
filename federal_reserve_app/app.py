@@ -1,6 +1,6 @@
 from flask import Flask
 #from extensions import db
-#from api import registerApi, signApi, serviceApi
+from api import gdpApi
 
 
 def create_app():
@@ -12,7 +12,7 @@ def create_app():
     app = Flask(__name__)
     
     app.config.from_object('config.settings.DevelopmentConfig')
-  
+    
 
     '''
     initialize the db and register the modularized services to the app.
@@ -20,11 +20,16 @@ def create_app():
     #db.init_app(app)
     
     
-    #app.register_blueprint(registerApi)    
+    app.register_blueprint(gdpApi)    
     #app.register_blueprint(signApi)
     #app.register_blueprint(serviceApi)
 
     return app
 
+
+if __name__=='__main__':    
+    app = create_app()  # os.environ['ENV_SETTINGS']; export ENV_SETTINGS='DevelopmentConfig'
+    
+    app.run(debug=True)
 
 

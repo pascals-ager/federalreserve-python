@@ -20,7 +20,7 @@ services:
     restart: always
     image: postgres:9.4
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: scott
       POSTGRES_PASSWORD: tiger
       POSTGRES_DB: fundingcircle
     volumes:
