@@ -7,6 +7,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://scott:tiger@localhost:5432/fundingcircle'
+    DATABASE_URI = 'postgresql://scott:tiger@postgres/fundingcircle'
+    SCHEMA = 'fred'
 
 
