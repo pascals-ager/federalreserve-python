@@ -26,10 +26,10 @@ def create_app():
 
     return app
 
-
+'''
 if __name__=='__main__':    
     app = create_app()  # os.environ['ENV_SETTINGS']; export ENV_SETTINGS='DevelopmentConfig'
     
     app.run(debug=True)
-
+'''
 

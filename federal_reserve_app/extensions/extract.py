@@ -14,7 +14,7 @@ HTTPError = url_error.HTTPError
 ###########
 from sqlalchemy import create_engine
 import psycopg2
-engine = create_engine('postgresql://scott:tiger@localhost:5432/fundingcircle')
+engine = create_engine('postgresql://scott:tiger@postgres/fundingcircle')
 ###########
 
 

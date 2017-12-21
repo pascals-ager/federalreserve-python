@@ -16,7 +16,7 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-VOLUME ["static"]
+#VOLUME ["static"]
 
 #RUN groupadd advithgroup && useradd -m -g advithgroup -s /bin/bash advith
 

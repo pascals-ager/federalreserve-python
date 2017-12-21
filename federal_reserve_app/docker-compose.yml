@@ -8,8 +8,6 @@ services:
     command: gunicorn -b 0.0.0.0:8000 --reload --access-logfile - "app:create_app()"
     environment:
       PYTHONUNBUFFERED: 'true'
-    volumes:
-      - .:/federal_reserve_app
     depends_on:
       postgres:
         condition: service_healthy 
@@ -18,11 +16,7 @@ services:
 
   postgres:
     restart: always
-    image: postgres:9.4
-    environment:
-      POSTGRES_USER: scott
-      POSTGRES_PASSWORD: tiger
-      POSTGRES_DB: fundingcircle
+    build: ./postgresql
     volumes:
       - ./postgresql/data:/var/lib/postgresql/data
     ports:
@@ -33,6 +27,3 @@ services:
       timeout: 50s
       retries: 3
 
-
-volumes:
-  postgres:
