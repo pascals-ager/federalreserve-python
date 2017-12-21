@@ -1,1 +1,1 @@
-from .gdp import blueprint as gdpApi
+from .fred import blueprint as fredApi

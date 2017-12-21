@@ -11,20 +11,15 @@ urlencode = url_parse.urlencode
 HTTPError = url_error.HTTPError
 
 
-#######
+###########
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import psycopg2
-
 engine = create_engine('postgresql://scott:tiger@localhost:5432/fundingcircle')
-
-# create a configured "Session" class
-Session = sessionmaker(bind=engine)
 ###########
 
 
 
-class Fred(object):
+class Etl(object):
     earliest_realtime_start = '1776-07-04'
     latest_realtime_end = '9999-12-31'
     nan_char = '.'
@@ -122,20 +117,26 @@ class Fred(object):
             else:
                 val = float(val)
             data[self._parse(child.get('date'))] = val
+
         return data
 
-    def load(self, data, pos, load_type):
-        df = pd.DataFrame(list(data.items()),columns=['period','gdp_data'])
-        df.index += pos
-        
-        session = Session()
+    def load(self, data, pos, load_type, table, schema):
+        df = pd.DataFrame(list(data.items()),columns=['period','data'])
+        df['period'] = pd.to_datetime(df['period'])
+        if pos > 1:
+            df = df[1:]
+        df.index += pos        
         try:
-            df.to_sql('gdp_data', engine, if_exists=load_type,schema='fred',index=True)
-
-            session.commit()
-        except:
-            session.rollback()
+            df.to_sql(table, engine, if_exists=load_type, schema=schema, index=True)            
+        except:            
             raise
-        finally:
-            session.close()
 
+        return
+
+
+    def getConnectionPoint(self, table, schema):
+        statement = "select index, period from "+ schema+"."+table+" order by period desc limit 1"
+        connectionPoint = pd.read_sql_query(statement, engine)
+        load_date =  connectionPoint.iloc[0][1].to_pydatetime()
+        load_pos = connectionPoint.iloc[0][0]
+        return load_pos, load_date
