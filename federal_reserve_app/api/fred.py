@@ -21,7 +21,7 @@ class load(Resource):
             table = Table(series_id).name
         except:
             return make_response('Unsupported series', 401, {'WWW-Authenticate' : 'Series not supported. Please select one of GDPC1, UMCSENT, or UNRATE'})
-        load_type = 'append'
+        load_type = 'replace'
         pos = 1
         schema = 'fred'
         data = etl.get_series(series_id)
