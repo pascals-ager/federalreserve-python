@@ -22,8 +22,8 @@ To run
 2. docker-compose up (first run may take a while as images are layered)
 3. Once containers are up & running(ignore FATAL:  role "root" does not exist, this is a docker bug that is caused because of enforced dependencies in docker-compose, it can be solved by using systemd unit files for services dependency management)
     http://localhost:8000/api/#/default 
-4. Use the swagger-ui and click on the default namespace to enter the relevant series_id for load/increment
-5. Interact with docker postgres container:
+4. Click on the default namespace to use the swagger-ui and enter the relevant series_id for load/increment apis
+5. Interact with docker postgres container to check the load:
     sudo docker exec -i -t federalreserveapp_postgres_1 /bin/bash
     psql fundingcircle scott
     select * from fred.gdp_data_stg;
