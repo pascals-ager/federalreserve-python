@@ -1,0 +1,10 @@
+A REST API to trigger an ETL process. (???) 
+Doesn't seem like the best practice. For one, WSGI (flask) protocol is synchronous, that is the WSGI server can handle only one request at a time.
+Two, each request, being an ETL process takes time. 
+
+One way to solve this is to use a task queue like celery/redis and launch an ETL task.
+But, this does not notify the client when the ETL task is completed (push notifications). The client can be notified that the task is submitted only.
+
+So, websockets are an option for such push notifications?? Should we explore flask-socketIO or try using some kind of pub-sub mechanism to do things?
+
+Worth exploring.
