@@ -6,7 +6,7 @@ RUN  apt-get update &&  apt-get install -qq -y build-essential libpq-dev postgre
 
 ENV INSTALL_PATH /home/advith/federal_reserve_app
 
-#ENV ENV_SETTINGS 'TestConfig'
+ENV ENV_SETTINGS 'DevelopmentConfig'
 
 RUN mkdir -p $INSTALL_PATH
 
