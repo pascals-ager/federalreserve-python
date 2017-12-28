@@ -10,16 +10,17 @@ quote_plus = url_parse.quote_plus
 urlencode = url_parse.urlencode
 HTTPError = url_error.HTTPError
 
-
-###########
-from sqlalchemy import create_engine
-import psycopg2
-engine = create_engine('postgresql://scott:tiger@postgres/fundingcircle')
+'''
+Access DATABASE_URI and API_KEY from settings file. How do i did?
+'''
 ###########
 
 
+###########
 
-class Etl(object):
+
+
+class ExtractAndLoad(object):
     earliest_realtime_start = '1776-07-04'
     latest_realtime_end = '9999-12-31'
     nan_char = '.'
@@ -28,32 +29,9 @@ class Etl(object):
 
     def __init__(self,
                  api_key=None,
-                 api_key_file=None):
-        """
-        Initialize the Fred class that provides useful functions to query the Fred dataset. You need to specify a valid
-        API key in one of 3 ways: pass the string via api_key, or set api_key_file to a file with the api key in the
-        first line, or set the environment variable 'FRED_API_KEY' to the value of your api key. You can sign up for a
-        free api key on the Fred website at http://research.stlouisfed.org/fred2/
-        """
-        self.api_key = None
-        if api_key is not None:
-            self.api_key = api_key
-        elif api_key_file is not None:
-            f = open(api_key_file, 'r')
-            self.api_key = f.readline().strip()
-            f.close()
-        else:
-            self.api_key = os.environ.get('FRED_API_KEY')
-
-        if self.api_key is None:
-            import textwrap
-            raise ValueError(textwrap.dedent("""\
-                    You need to set a valid API key. You can set it in 3 ways:
-                    pass the string with api_key, or set api_key_file to a
-                    file with the api key in the first line, or set the
-                    environment variable 'FRED_API_KEY' to the value of your
-                    api key. You can sign up for a free api key on the Fred
-                    website at http://research.stlouisfed.org/fred2/"""))
+                 engine=None):
+        self.api_key = api_key
+        self.engine = engine
 
 
     def __fetch_data(self, url):
@@ -120,6 +98,22 @@ class Etl(object):
 
         return data
 
+
+
+    def get_connection_point(self, table, schema):
+        statement = "select index, period from "+ schema+"."+table+" order by period desc limit 1"
+        try:
+            connection_point = pd.read_sql_query(statement, self.engine)
+        except Exception as e:
+            raise
+        if not connection_point.empty:  
+            load_date =  connectionPoint.iloc[0][1].to_pydatetime()
+            load_pos = connectionPoint.iloc[0][0]
+            return load_pos, load_date
+        else:
+            return 1, None
+
+
     def load(self, data, pos, load_type, table, schema):
         df = pd.DataFrame(list(data.items()),columns=['period','data'])
         df['period'] = pd.to_datetime(df['period'])
@@ -127,16 +121,8 @@ class Etl(object):
             df = df[1:]
         df.index += pos        
         try:
-            df.to_sql(table, engine, if_exists=load_type, schema=schema, index=True)            
+            df.to_sql(table, self.engine, if_exists=load_type, schema=schema, index=True)            
         except:            
             raise
 
         return
-
-
-    def getConnectionPoint(self, table, schema):
-        statement = "select index, period from "+ schema+"."+table+" order by period desc limit 1"
-        connectionPoint = pd.read_sql_query(statement, engine)
-        load_date =  connectionPoint.iloc[0][1].to_pydatetime()
-        load_pos = connectionPoint.iloc[0][0]
-        return load_pos, load_date
