@@ -15,6 +15,9 @@ Application details
 7. /increment/{series_id} loads only those values that are not present in the tables, using the latest available date as the connection point to access Fred service
 8. The postgresql service runs @5432 and is mapped to host 5432. The data is persisted in a local host volume at ./postgresql/data
 
+####Added#####
+9. Docker container for Celery and Redis (@6379:6379)
+10. The ETL process is put on the celery task queue and asynchronously carried out by the workers
 
 To run
 -------
