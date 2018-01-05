@@ -27,3 +27,15 @@ services:
       timeout: 50s
       retries: 3
 
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server --requirepass devpassword
+    volumes:
+      - ./redis/data:/var/lib/redis/data
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: .
+    command: celery worker -l info -A api.tasks
+
