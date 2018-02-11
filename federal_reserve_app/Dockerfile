@@ -16,12 +16,4 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-#VOLUME ["static"]
-
-#RUN groupadd advithgroup && useradd -m -g advithgroup -s /bin/bash advith
-
-#RUN chown -R advith:advithgroup /home/advith
-
-#USER advith
-
-#CMD gunicorn -b 0.0.0.0:8000 "app:create_app('TestConfig')"
+CMD gunicorn -c "python:gunicorn" --reload --access-logfile - "app:create_app()"

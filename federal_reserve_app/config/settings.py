@@ -17,5 +17,6 @@ class DevelopmentConfig(BaseConfig):
     CELERY_TASK_SERIALIZER = 'json'
     CELERY_RESULT_SERIALIZER = 'json'
     CELERY_REDIS_MAX_CONNECTIONS = 5
+    LOG_LEVEL = 'DEBUG'
 
 
